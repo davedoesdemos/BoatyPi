@@ -1,0 +1,292 @@
+<html>
+    <head>
+        <style>
+            :root {
+                --fuelLevel: {{ fuelTankLevel }};
+                --batteryLevel: {{ stateOfCharge }};
+                --insideTemp: {{ insideTemperature }};
+                --outsideTemp: {{ outsideTemperature }};
+                --insideHumidity: {{ insideHumidity }};
+                --outsideHumidity: {{ outsideHumidity }};
+                --squareGraphHeight: 300px;
+                --squareGraphWidth: 100px;
+                --squareGraphMargin: 5px;
+                --squareGraphHeightFull: calc(var(--squareGraphHeight) - calc(2 * var(--squareGraphMargin)));
+                --squareGraphWidthFull: calc(var(--squareGraphWidth) - calc(2 * var(--squareGraphMargin)));
+            }
+            body {
+                height: 480px;
+                width: 800px;
+                overflow: hidden;
+                margin: 0px;
+            }
+            .boatDashboard {
+                height: 480px;
+                width: 800px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            .titleContainer {
+                text-align: left;
+            }
+            .title {
+                font-size: 40px;
+                font-weight: bold;
+                font-family: Arial, Helvetica, sans-serif;
+                margin-left: 20px;
+            }
+            .dataContainer {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                gap: 3px;
+            }
+            .dataBox {
+                height: 330px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-end;
+                text-align: center;
+            }
+            .dataBoxChartTall {
+                width: 95px;
+                height: 292px;
+                position: sticky;
+            }
+            .dataBoxChartSquare {
+                width: 292px;
+                height: 292px;
+                position: sticky;
+            }
+            .dataBoxLabel {
+                font-size: 1.5rem;
+                font-weight: bold;
+                font-family: Arial, Helvetica, sans-serif;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                align-self: center;
+            }
+            circle {
+                fill: none;
+            }
+            .graphInsideTemperature {
+                --barSize: calc(75px * calc(var(--insideTemp) / 50));
+                --blankSize: calc(calc(75px * calc(calc(50 - var(--insideTemp))/50)) + 25px);
+                cx: 50px;
+                cy: 50px;
+                r: 44px;
+                stroke-width: 10px;
+                stroke-linecap: round;
+                stroke-dasharray: var(--barSize) var(--blankSize);
+                stroke-dashoffset: -50;
+            }
+            .graphInsideHumidity {
+                --barSize: calc(75px * calc(var(--insideHumidity) / 100));
+                --blankSize: calc(calc(75px * calc(calc(100 - var(--insideHumidity))/100)) + 25px);
+                cx: 50px;
+                cy: 50px;
+                r: 32px;
+                stroke-width: 10px;
+                stroke-linecap: round;
+                stroke-dasharray: var(--barSize) var(--blankSize);
+                stroke-dashoffset: -50;
+            }
+            .graphOutsideTemperature {
+                --barSize: calc(75px * calc(var(--outsideTemp) / 50));
+                --blankSize: calc(calc(75px * calc(calc(50 - var(--outsideTemp))/50)) + 25px);
+                cx: 50px;
+                cy: 50px;
+                r: 44px;
+                stroke-width: 10px;
+                stroke-linecap: round;
+                stroke-dasharray: var(--barSize) var(--blankSize);
+                stroke-dashoffset: -50;
+            }
+            .graphOutsideHumidity {
+                --barSize: calc(75px * calc(var(--outsideHumidity) / 100));
+                --blankSize: calc(calc(75px * calc(calc(100 - var(--outsideHumidity))/100)) + 25px);
+                cx: 50px;
+                cy: 50px;
+                r: 32px;
+                stroke-width: 10px;
+                stroke-linecap: round;
+                stroke-dasharray: var(--barSize) var(--blankSize);
+                stroke-dashoffset: -50;
+            }
+            .graphFuel {
+                --fuelBarHeight: calc(var(--squareGraphHeightFull) * var(--fuelLevel));
+                x: var(--squareGraphMargin);
+                y: calc(var(--squareGraphHeight) - var(--fuelBarHeight) - var(--squareGraphMargin));
+                width: var(--squareGraphWidthFull);
+                height: var(--fuelBarHeight);
+                rx: 5px;
+                ry: 5px;
+                stroke: black;
+                stroke-width: 2;
+            }
+            .graphFuelOutline {
+                x: var(--squareGraphMargin);
+                y: var(--squareGraphMargin);
+                width: var(--squareGraphWidthFull);
+                height: var(--squareGraphHeightFull);
+                rx: 5px;
+                ry: 5px;
+                stroke: black;
+                stroke-width: 2;
+                fill: none;
+            }
+            .graphBattery {
+                --batteryBarHeight: calc(var(--squareGraphHeightFull) * var(--batteryLevel));
+                x: var(--squareGraphMargin);
+                y: calc(var(--squareGraphHeight) - var(--batteryBarHeight) - var(--squareGraphMargin));
+                width: var(--squareGraphWidthFull);
+                height: var(--batteryBarHeight);
+                rx: 5px;
+                ry: 5px;
+                stroke: black;
+                stroke-width: 2;
+            }
+            .graphBatteryOutline {
+                x: var(--squareGraphMargin);
+                y: var(--squareGraphMargin);
+                width: var(--squareGraphWidthFull);
+                height: var(--squareGraphHeightFull);
+                rx: 5px;
+                ry: 5px;
+                stroke: black;
+                stroke-width: 2;
+                fill: none;
+            }
+            .barLabel {
+                z-index: 2;
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 90%;
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+            }
+            .squareLabel {
+                z-index: 2;
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 100%;
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+            }
+            .barLabelText {
+                font-size: 1.5rem;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-weight: bold;
+                background-color: white;
+                align-self: end;
+                width: 80%;
+                text-align: center;
+            }
+            .squareLabelText {
+                font-size: 2rem;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-weight: bold;
+                align-self: center;
+                width: 80%;
+                text-align: center;
+            }
+            .baroContainer {
+                text-align: center;
+            }
+            .baroGraphImg {
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="boatDashboard">
+            <div class="titleContainer">
+                <div class="title">Anam Cara</div>
+            </div>
+            <div class="dataContainer">
+                <div class="dataBox">
+                    <div class="dataBoxChartTall">
+                        <svg viewBox="0 0 100 300">
+                            <rect class="graphFuelOutline" />
+                            <rect class="graphFuel" fill="red" />
+                        </svg>
+                        <div class="barLabel">
+                            <span class="barLabelText">{{ fuelTankLevelpc }}&percnt;<br />{{ fuelRemaining }}L</span>
+                        </div>
+                    </div>
+                    <div class="dataBoxLabel">Fuel</div>
+                </div>
+                <div class="dataBox">
+                    <div class="dataBoxChartSquare">
+                        <svg viewBox="0 0 100 100">
+                            <defs>
+                                <linearGradient id="gradTemp" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0%" stop-color="yellow" />
+                                    <stop offset="100%" stop-color="red" />
+                                </linearGradient>
+                                <linearGradient id="gradHumidity" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0%" stop-color="blue" stop-opacity="0" />
+                                    <stop offset="100%" stop-color="blue" stop-opacity="100" />
+                                </linearGradient>
+                            </defs>
+                            <circle class="graphInsideTemperature" pathLength="100" stroke="orange" stroke-dasharray="75 25" stroke-dashoffset="-50"></circle>
+                            <circle class="graphInsideHumidity" pathLength="100" stroke="lightblue" stroke-dasharray="75 25" stroke-dashoffset="-50"></circle>
+                        </svg>
+                        <div class="squareLabel">
+                            <span class="squareLabelText">{{ insideTemperature }}&deg;C<br />{{ insideHumidity }}&percnt;</span>
+                        </div>
+                    </div>
+                    <div class="dataBoxLabel">Inside</div>
+                </div>
+                <div class="dataBox">
+                    <div class="dataBoxChartSquare">
+                        <svg viewBox="0 0 100 100">
+                            <defs>
+                                <linearGradient id="gradTemp" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0%" stop-color="yellow" />
+                                    <stop offset="100%" stop-color="red" />
+                                </linearGradient>
+                                <linearGradient id="gradHumidity" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0%" stop-color="blue" stop-opacity="0" />
+                                    <stop offset="100%" stop-color="blue" stop-opacity="100" />
+                                </linearGradient>
+                            </defs>
+                            <circle class="graphOutsideTemperature" pathLength="100" stroke="orange" stroke-dasharray="75 25" stroke-dashoffset="-50"></circle>
+                            <circle class="graphOutsideHumidity" pathLength="100" stroke="lightblue" stroke-dasharray="75 25" stroke-dashoffset="-50"></circle>
+                        </svg>
+                        <div class="squareLabel">
+                            <span class="squareLabelText">{{ outsideTemperature }}&deg;C<br />{{ outsideHumidity }}&percnt;</span>
+                        </div>
+                    </div>
+                    <div class="dataBoxLabel">Outside</div>
+                </div>
+                <div class="dataBox">
+                    <div class="dataBoxChartTall">
+                        <svg viewBox="0 0 100 300">
+                            <rect class="graphBatteryOutline" />
+                            <rect class="graphBattery" fill="blue" />
+                        </svg>
+                        <div class="barLabel">
+                            <span class="barLabelText">{{ stateOfChargepc }}&percnt;</span>
+                        </div>
+                    </div>
+                    <div class="dataBoxLabel">Battery</div>
+                </div>
+            </div>
+            
+            <div class="dataBoxLabel">Barometer</div>
+            <div class="baroContainer">
+                <img class="baroGraphImg" src="img/baroGraph.svg" />
+            </div>
+        </div>
+    </body>
+</html>

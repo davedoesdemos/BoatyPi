@@ -1,0 +1,34 @@
+# BoatDisplay
+ePaper/RPi display
+
+This project uses a Raspberry Pi (3, 4, 5 or Zero 2W) alongside an eInk/ePaper screen from WaveShare to create a screen which takes data from the Internet, a Victron Cerbo/VenusOS using Signal K, and Ruuvi sensors to make a dashboard.
+
+Currently showing:
+- Fuel level (% and capacity) (Cerbo connected to fuel sender and calibrated)
+- Battery SOC (Cerbo)
+- Inside and outside temperature and humidity (Ruuvi, Bluetooth to Cerbo)
+- Barometer graph for past X hours from vrm API (Ruuvi to Cerbo then to VRM)
+
+- Weather (Openweathermap.org)
+
+- YouTube Stats (Google API)
+
+- Fortune (Linux command line)
+
+Install
+Clone the repo to your Pi
+
+Add lines to /etc/crontab:
+-Refresh the data and render png files every five minutes between 7am and 9pm
+*/5 7-21 * * * lustyd    sh /path/to/repo/BoatyPi/app/refreshdata.sh
+
+-display the various pages at different times
+8,38 7-21 * * * lustyd    /usr/bin/python /path/to/repo/BoatyPi/app/python/displayYoutube.py
+18,48 7-21 * * * lustyd    /usr/bin/python /path/to/repo/BoatyPi/app/python/displayFortune.py
+28,58 7-21 * * * lustyd    /usr/bin/python /path/to/repo/BoatyPi/app/python/displayWeather.py
+
+-display the main dashboard more often
+3,13,23,33,43,53 7-21 * * * lustyd    /path/to/repo/BoatyPi/app/python/displayBoatData.py
+
+-clear the display at 10pm
+0 22 * * * lustyd    /usr/bin/python /path/to/repo/BoatyPi/app/python/displayShutdown.py

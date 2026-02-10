@@ -1,0 +1,186 @@
+<html>
+    <head>
+        <style>
+            body {
+                height: 480px;
+                width: 800px;
+                overflow: hidden;
+            }
+            .weatherDashboard {
+                height: 480px;
+                width: 800px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            .titleContainer {
+                text-align: center;
+            }
+            .title {
+                font-size: 30px;
+                font-weight: bold;
+                font-family: Arial, Helvetica, sans-serif
+            }
+            .currentDate {
+                font-size: 15px;
+                font-weight: bold;
+                font-family: Arial, Helvetica, sans-serif
+            }
+            .todayContainer {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                gap: 1px;
+            }
+            .currentWeather {
+                width: 40%;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+            }
+            .currentIcon {
+                width: 50%;
+            }
+            .currentIconImg {
+                max-width: 100%;
+            }
+            .currentTemperature {
+                width: 50%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                text-align: center;
+            }
+            .currentTemp {
+                font-size: 50px;
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            .feelsLike {
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            .currentData {
+                width: 40%;
+                display: grid;
+                grid-template-columns: 50% 50%;
+            }
+            .dataPoint {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+            }
+            .dataPointIcon {
+                width: 25%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .dataPointIconImg {
+                max-width: 95%;
+            }
+            .dataPointData {
+                width: 75%;
+                text-align: left;
+                font-family: Arial, Helvetica, sans-serif;
+                display: flex;
+                align-items: center;
+                margin-left: 2px;
+            }
+            .forecastContainer {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                gap: 3px;
+            }
+            .forecastDay {
+                border-style: solid;
+                border-radius: 10px;
+                border-width: 1px;
+                border-color: black;
+                width: 10%;
+                height: 130px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+            }
+            .dayLabel {
+                font-family: Arial, Helvetica, sans-serif;
+                font-weight: bold;
+            }
+            .dayIcon {
+                align-items: center;
+            }
+            .dayIconImg {
+                max-width: 100%;
+            }
+            .dayMaxMin {
+                font-size: 14px;
+                font-family: Arial, Helvetica, sans-serif;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="weatherDashboard">
+            <div class="titleContainer">
+                <div class="title">{{ city }}</div>
+                <div class="current-date">{{ currentDate }}</div>
+            </div>
+            <div class="todayContainer">
+                <div class="currentWeather">
+                    <div class="currentIcon"><img class="currentIconImg" src="weathericons/{{ weather_data.daily[0].weather[0].icon }}.png" /></div>
+                    <div class="currentTemperature">
+                        <div class="currentTemp">{{ weather_data.current.temp }}&deg;C</div>
+                        <div class="feelsLike">Feels like {{ weather_data.current.feels_like }}&deg;</div>
+                    </div>
+                </div>
+                <div class="currentData">
+                    <div class="dataPoint">
+                        <div class="dataPointIcon"><img class="dataPointIconImg" src="weathericons/sunrise.png" /></div>
+                        <div class="dataPointData">Sunrise<br />{{ sunrise }}</div>
+                    </div>
+                    <div class="dataPoint">
+                        <div class="dataPointIcon"><img class="dataPointIconImg" src="weathericons/sunset.png" /></div>
+                        <div class="dataPointData">Sunset<br />{{ sunset }}</div>
+                    </div>
+                    <div class="dataPoint">
+                        <div class="dataPointIcon"><img class="dataPointIconImg" src="weathericons/wind.png" /></div>
+                        <div class="dataPointData">Wind<br />{{ weather_data.daily[0].wind_speed }}</div>
+                    </div>
+                    <div class="dataPoint">
+                        <div class="dataPointIcon"><img class="dataPointIconImg" src="weathericons/pressure.png" /></div>
+                        <div class="dataPointData">Pressure<br />{{ weather_data.daily[0].pressure }}</div>
+                    </div>
+                    <div class="dataPoint">
+                        <div class="dataPointIcon"><img class="dataPointIconImg" src="weathericons/visibility.png" /></div>
+                        <div class="dataPointData">Visibility<br />{{ weather_data.current.visibility }}</div>
+                    </div>
+                    <div class="dataPoint">
+                        <div class="dataPointIcon"><img class="dataPointIconImg" src="weathericons/humidity.png" /></div>
+                        <div class="dataPointData">Humidity<br />{{ weather_data.current.humidity }}</div>
+                    </div>
+                    <div class="dataPoint">
+                        <div class="dataPointIcon"><img class="dataPointIconImg" src="weathericons/uvi.png" /></div>
+                        <div class="dataPointData">UV Index<br />{{ weather_data.current.uvi }}</div>
+                    </div>
+                    <div class="dataPoint">
+                        <div class="dataPointIcon"><img class="dataPointIconImg" src="weathericons/{{ moonPhase }}.png" /></div>
+                        <div class="dataPointData">Moon Phase<br />{{ moonPhase }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="forecastContainer">
+
+                {% for item in weather_data.daily[1:] %}
+                <div class="forecastDay">
+                    <div class="dayLabel">{{ item.dt }}</div>
+                    <div class="dayIcon">
+                        <img class="dayIconImg" src="weathericons/{{ item.weather[0].icon }}.png" />
+                    </div>
+                    <div class="dayMaxMin">{{ item.temp.max }}&deg; / {{ item.temp.min }}&deg;</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </body>
+</html>

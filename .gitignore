@@ -1,0 +1,4 @@
+# .gitignore
+.env
+app/html/
+app/renders/
