@@ -17,18 +17,30 @@ Currently showing:
 
 Install
 Clone the repo to your Pi
+Edit the python files to set your own paths etc.
+
+Create a .env file with your keys in containing:
+
+VICTRON_KEY=Token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+VICTRON_SITE=xxxxxx
+WEATHER_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+GOOGLE_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 Add lines to /etc/crontab:
 -Refresh the data and render png files every five minutes between 7am and 9pm
+
 */5 7-21 * * * lustyd    sh /path/to/repo/BoatyPi/app/refreshdata.sh
 
 -display the various pages at different times
+
 8,38 7-21 * * * lustyd    /usr/bin/python /path/to/repo/BoatyPi/app/python/displayYoutube.py
 18,48 7-21 * * * lustyd    /usr/bin/python /path/to/repo/BoatyPi/app/python/displayFortune.py
 28,58 7-21 * * * lustyd    /usr/bin/python /path/to/repo/BoatyPi/app/python/displayWeather.py
 
 -display the main dashboard more often
+
 3,13,23,33,43,53 7-21 * * * lustyd    /path/to/repo/BoatyPi/app/python/displayBoatData.py
 
 -clear the display at 10pm
+
 0 22 * * * lustyd    /usr/bin/python /path/to/repo/BoatyPi/app/python/displayShutdown.py
