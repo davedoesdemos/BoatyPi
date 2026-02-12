@@ -5,6 +5,7 @@
                 height: 480px;
                 width: 800px;
                 overflow: hidden;
+                margin: 0px;
             }
             .weatherDashboard {
                 height: 480px;
@@ -33,7 +34,7 @@
                 gap: 1px;
             }
             .currentWeather {
-                width: 40%;
+                width: 48%;
                 display: flex;
                 flex-direction: row;
                 justify-content: center;
@@ -59,7 +60,7 @@
                 font-family: Arial, Helvetica, sans-serif;
             }
             .currentData {
-                width: 40%;
+                width: 48%;
                 display: grid;
                 grid-template-columns: 50% 50%;
             }
@@ -68,6 +69,10 @@
                 flex-direction: row;
                 justify-content: center;
             }
+            .dataPointText {
+                font-weight: bold;
+                display: contents;
+            }
             .dataPointIcon {
                 width: 25%;
                 display: flex;
@@ -75,7 +80,7 @@
                 align-items: center;
             }
             .dataPointIconImg {
-                max-width: 95%;
+                max-width: 80%;
             }
             .dataPointData {
                 width: 75%;
@@ -96,8 +101,8 @@
                 border-radius: 10px;
                 border-width: 1px;
                 border-color: black;
-                width: 10%;
-                height: 130px;
+                width: 13%;
+                height: 160px;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
@@ -105,6 +110,7 @@
                 text-align: center;
             }
             .dayLabel {
+                font-size: 22px;
                 font-family: Arial, Helvetica, sans-serif;
                 font-weight: bold;
             }
@@ -112,11 +118,12 @@
                 align-items: center;
             }
             .dayIconImg {
-                max-width: 100%;
+                max-width: 90%;
             }
             .dayMaxMin {
-                font-size: 14px;
+                font-size: 20px;
                 font-family: Arial, Helvetica, sans-serif;
+                font-weight: bold;
             }
         </style>
     </head>
@@ -137,35 +144,35 @@
                 <div class="currentData">
                     <div class="dataPoint">
                         <div class="dataPointIcon"><img class="dataPointIconImg" src="weathericons/sunrise.png" /></div>
-                        <div class="dataPointData">Sunrise<br />{{ sunrise }}</div>
+                        <div class="dataPointData">Sunrise<br /><span class="dataPointText">{{ sunrise }}</span></div>
                     </div>
                     <div class="dataPoint">
                         <div class="dataPointIcon"><img class="dataPointIconImg" src="weathericons/sunset.png" /></div>
-                        <div class="dataPointData">Sunset<br />{{ sunset }}</div>
+                        <div class="dataPointData">Sunset<br /><span class="dataPointText">{{ sunset }}</span></div>
                     </div>
                     <div class="dataPoint">
                         <div class="dataPointIcon"><img class="dataPointIconImg" src="weathericons/wind.png" /></div>
-                        <div class="dataPointData">Wind<br />{{ weather_data.daily[0].wind_speed }}</div>
+                        <div class="dataPointData">Wind<br /><span class="dataPointText">{{ weather_data.daily[0].wind_speed }}</span></div>
                     </div>
                     <div class="dataPoint">
                         <div class="dataPointIcon"><img class="dataPointIconImg" src="weathericons/pressure.png" /></div>
-                        <div class="dataPointData">Pressure<br />{{ weather_data.daily[0].pressure }}</div>
+                        <div class="dataPointData">Pressure<br /><span class="dataPointText">{{ weather_data.daily[0].pressure }}</span></div>
                     </div>
                     <div class="dataPoint">
                         <div class="dataPointIcon"><img class="dataPointIconImg" src="weathericons/visibility.png" /></div>
-                        <div class="dataPointData">Visibility<br />{{ weather_data.current.visibility }}</div>
+                        <div class="dataPointData">Visibility<br /><span class="dataPointText">{{ weather_data.current.visibility }}</span></div>
                     </div>
                     <div class="dataPoint">
                         <div class="dataPointIcon"><img class="dataPointIconImg" src="weathericons/humidity.png" /></div>
-                        <div class="dataPointData">Humidity<br />{{ weather_data.current.humidity }}</div>
+                        <div class="dataPointData">Humidity<br /><span class="dataPointText">{{ weather_data.current.humidity }}</span></div>
                     </div>
                     <div class="dataPoint">
                         <div class="dataPointIcon"><img class="dataPointIconImg" src="weathericons/uvi.png" /></div>
-                        <div class="dataPointData">UV Index<br />{{ weather_data.current.uvi }}</div>
+                        <div class="dataPointData">UV Index<br /><span class="dataPointText">{{ weather_data.current.uvi }}</span></div>
                     </div>
                     <div class="dataPoint">
                         <div class="dataPointIcon"><img class="dataPointIconImg" src="weathericons/{{ moonPhase }}.png" /></div>
-                        <div class="dataPointData">Moon Phase<br />{{ moonPhase }}</div>
+                        <div class="dataPointData">Moon Phase<br /><span class="dataPointText">{{ moonPhase }}</span></div>
                     </div>
                 </div>
             </div>
