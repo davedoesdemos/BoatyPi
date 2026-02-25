@@ -35,7 +35,7 @@ try:
     response = requests.get(URL)
     data = response.json()
     fuelTankLevel = f"{data['20']['currentLevel']['value']}"
-    fuelTankLevelpc = f"{data['20']['currentLevel']['value']*100}"
+    fuelTankLevelpc = f"{round(data['20']['currentLevel']['value']*100, 0):g}"
     fuelRemaining = f"{round(data['20']['remaining']['value']*1000, 0):g}"
 
 except Exception as e:
