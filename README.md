@@ -3,6 +3,10 @@ ePaper/RPi display
 
 This project uses a Raspberry Pi (3, 4, 5 or Zero 2W) alongside an eInk/ePaper screen from WaveShare to create a screen which takes data from the Internet, a Victron Cerbo/VenusOS using Signal K, and Ruuvi sensors to make a dashboard.
 
+![Boat display showing fuel level and fuel remaining, indoor and outdoor temp and humidity and barometer history](docs/images/boatscreen.jpeg)
+
+![Screen showing weather information for the coming week](docs/images/weatherscreen.jpeg)
+
 Please check out InkyPi, which inspired the project and from where I took many hints. I considered making plugins for that project, but I wanted this to work differently. BoatyPi publishes the html pages as both png (for the epaper) and html for a locally hosted webpage on board the boat. I also use crontab for the scheduling - time will tell whether that's better or worse.
 https://github.com/fatihak/InkyPi
 
